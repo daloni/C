@@ -1,4 +1,3 @@
 # PONG #
 # author: Daniel Lopez #
-Execute: gcc main.c -o main -lSDL
-./main
+Execute: ./make
