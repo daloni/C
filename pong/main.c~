@@ -19,13 +19,13 @@ int main() {
 
 	SDL_Init (SDL_INIT_EVERYTHING);
 
-	ball = SDL_LoadBMP("./img/icon1.bmp");
-	bar = SDL_LoadBMP("./img/barra.bmp");
-	SDL_WM_SetIcon(SDL_LoadBMP("./img/icon.bmp"), NULL);
+	ball = SDL_LoadBMP("./icon/icon1.bmp");
+	bar = SDL_LoadBMP("./icon/barra.bmp");
+	SDL_WM_SetIcon(SDL_LoadBMP("./icon/icon.bmp"), NULL);
 	screenGeneral = SDL_SetVideoMode(600, 800, 32, SDL_SWSURFACE);
 	
 	while (True == 1) {
-		if (x == 1 && y == 1) {
+		/*if (x == 1 && y == 1) {
 			posicion_ball.x = posicion_ball.x + movImage;
 			posicion_ball.y = posicion_ball.y + movImage;
 		} else if (x == 0 && y == 1) {
@@ -46,7 +46,7 @@ int main() {
 		    posicion_ball.x + ball->w > posicion_barra.x && 
 		    posicion_ball.x < posicion_barra.x + bar->w) {
 			y = 0;
-		}
+		}*/
 		if (posicion_ball.x < 0) {
 			x = 1;
 		}
@@ -83,7 +83,7 @@ int main() {
 				}
 			}
 			
-		}
+		}/*
 		if (moveBarLeftTrue == 1 && posicion_barra.x > 0) {
 			posicion_barra.x = posicion_barra.x - moveBar;
 		}
@@ -95,7 +95,7 @@ int main() {
 			printf("Game Over\n");
 			SDL_Quit();
 			return 0;
-		}
+		}*/
 	}
 
 	return 0;
