@@ -30,7 +30,6 @@ int main() {
 	while (True == 1) {
 		buttonPositionX = event.motion.x;
 		buttonPositionY = event.motion.y;
-		
 		if(buttonPositionX > startButtonPosition.x && buttonPositionX < startButtonPosition.x + startButton->w &&
 			   buttonPositionY > startButtonPosition.y && buttonPositionY < startButtonPosition.y + startButton->h) {
 
