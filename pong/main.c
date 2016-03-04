@@ -33,12 +33,6 @@ int main() {
 		
 		if(buttonPositionX > startButtonPosition.x && buttonPositionX < startButtonPosition.x + startButton->w &&
 			   buttonPositionY > startButtonPosition.y && buttonPositionY < startButtonPosition.y + startButton->h) {
-
-				SDL_FillRect (screenGeneral, 0, SDL_MapRGB (screenGeneral->format, 42, 85, 224));
-				startButton = SDL_LoadBMP("./img/start_button_hover.bmp");
-				SDL_BlitSurface(startButton, NULL, screenGeneral, &startButtonPosition);
-				SDL_Delay(20);
-
 				
 				if(event.button.button == SDL_BUTTON_LEFT) {
 					while(game() == 0) {
