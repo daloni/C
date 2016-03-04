@@ -39,8 +39,9 @@ int main() {
 			if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 				buttonPositionX = event.motion.x;
 				buttonPositionY = event.motion.y;
-				if (buttonPositionX > startButtonPosition.x && buttonPositionX < startButtonPosition.x + startButton->w &&
-					buttonPositionY > startButtonPosition.y && buttonPositionY < startButtonPosition.y + startButton->h) {
+				if (buttonPositionX > startButtonPosition.x && buttonPositionX < startButtonPosition.x + startButton->w
+					buttonPositionY > startButtonPosition.y && buttonPositionY < startButtonPosition.y + startButton->h
+					&& event.button.button == SDL_BUTTON_LEFT ) {
 				
 					while(game() == 0) {
 						SDL_Quit();
