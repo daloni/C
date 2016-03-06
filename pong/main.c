@@ -1,6 +1,8 @@
 #include <SDL/SDL.h>
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
+#include <stdio.h>
+#include <string.h>
 
 int True = 1;
 SDL_Surface* screenGeneral = NULL;
@@ -81,66 +83,81 @@ int main() {
 }
 
 int game() {
-	SDL_Rect posicion_ball, posicion_barra;
-	posicion_ball.x = 150;
-	posicion_ball.y = 100;
-	posicion_barra.x = widthScreen * 0.2;
-	posicion_barra.y = heightScreen - heightScreen * 0.2;
+	SDL_Rect position_ball, position_barra, position_score;
+	position_ball.x = 150;
+	position_ball.y = 100;
+	position_barra.x = widthScreen * 0.2;
+	position_barra.y = heightScreen * 0.9;
+	position_score.x = widthScreen * 0.8;
+	position_score.y = heightScreen * 0.1;
 
 	int x = 1, y = 1;
 	int movImage = 5, moveBar = 5, moveBarLeftTrue = 0, moveBarRightTrue = 0;
 	int delay = 15;
-	int puntuacion = 0;
+	int countScore = 0;
+	char scoreChar[20];
 
 	ball = SDL_LoadBMP("./img/icon1.bmp");
 	bar = SDL_LoadBMP("./img/barra.bmp");
 	SDL_SetColorKey (ball, SDL_SRCCOLORKEY, SDL_MapRGB (ball->format, 0, 0, 0));
 	SDL_SetColorKey (bar, SDL_SRCCOLORKEY, SDL_MapRGB (bar->format, 0, 0, 0));
+
+	/* Score */
+	TTF_Font* font = TTF_OpenFont("./fonts/arial.ttf", 12);
+	SDL_Surface *score;
+	SDL_Color text_color = {0, 0, 0};
 	
 	while (True == 1) {
 		/* Movement of the ball */
+		//printf("%i > %i\n", position_barra.x, bar->h);
 		if (x == 1 && y == 1) {
-			posicion_ball.x = posicion_ball.x + movImage;
-			posicion_ball.y = posicion_ball.y + movImage;
+			position_ball.x = position_ball.x + movImage;
+			position_ball.y = position_ball.y + movImage;
 		} else if (x == 0 && y == 1) {
-			posicion_ball.x = posicion_ball.x - movImage;
-			posicion_ball.y = posicion_ball.y + movImage;
+			position_ball.x = position_ball.x - movImage;
+			position_ball.y = position_ball.y + movImage;
 		} else if (x == 1 && y == 0) {
-			posicion_ball.x = posicion_ball.x + movImage;
-			posicion_ball.y = posicion_ball.y - movImage;
+			position_ball.x = position_ball.x + movImage;
+			position_ball.y = position_ball.y - movImage;
 		} else {
-			posicion_ball.x = posicion_ball.x - movImage;
-			posicion_ball.y = posicion_ball.y - movImage;
+			position_ball.x = position_ball.x - movImage;
+			position_ball.y = position_ball.y - movImage;
 		}
 		/* Change direction ball */
-		if ((posicion_ball.y + ball->h > posicion_barra.y + 10 && 
-		     posicion_ball.y < posicion_barra.y + bar->h && 
-		     posicion_ball.x + ball->w > posicion_barra.x && 
-		     posicion_ball.x < posicion_barra.x + bar->w && x == 1) ||
-		    posicion_ball.x + ball->w > widthScreen) {
+		if ((position_ball.y + ball->h > position_barra.y + 6 &&
+		     position_ball.y < position_barra.y + bar->h &&
+		     position_ball.x + ball->w > position_barra.x &&
+		     position_ball.x < position_barra.x + bar->w/2 && x == 1) ||
+		    position_ball.x + ball->w > widthScreen) {
 			x = 0;
 		}
-		if (posicion_ball.y + ball->h > posicion_barra.y &&
-		    posicion_ball.y + ball->h < posicion_barra.y + 10 &&
-		    posicion_ball.x + ball->w > posicion_barra.x && 
-		    posicion_ball.x < posicion_barra.x + bar->w && y == 1) {
+		if (position_ball.y + ball->h > position_barra.y &&
+		    position_ball.y + ball->h < position_barra.y + 10 &&
+		    position_ball.x + ball->w > position_barra.x && 
+		    position_ball.x < position_barra.x + bar->w && y == 1) {
 			y = 0;
-			puntuacion++;
+			if (countScore < 999) {
+				countScore++;
+			}
 		}
-		if ((posicion_ball.y + ball->h > posicion_barra.y + 10 && 
-		     posicion_ball.y < posicion_barra.y + bar->h && 
-		     posicion_ball.x + ball->w > posicion_barra.x && 
-		     posicion_ball.x < posicion_barra.x + bar->w && x == 0) ||
-		    posicion_ball.x < 0) {
+		if ((position_ball.y + ball->h > position_barra.y + 6 &&
+		     position_ball.y < position_barra.y + bar->h
+		     && position_ball.x + ball->w > position_barra.x + bar->w/2 &&
+		     position_ball.x < position_barra.x + bar->w && x == 0) ||
+		    position_ball.x < 0) {
 			x = 1;
 		}
-		if (posicion_ball.y < 0) {
+		if (position_ball.y < 0) {
 			y = 1;
 		}
+		/* Score */
+		sprintf(scoreChar, "Puntuacion: %i", countScore);
+		score = TTF_RenderText_Solid(font, scoreChar, text_color);
 		/* Screen config */
 		SDL_FillRect (screenGeneral, 0, SDL_MapRGB (screenGeneral->format, 42, 85, 224));
-		SDL_BlitSurface(ball, NULL, screenGeneral, &posicion_ball);
-		SDL_BlitSurface(bar, NULL, screenGeneral, &posicion_barra);
+		SDL_BlitSurface(ball, NULL, screenGeneral, &position_ball);
+		SDL_BlitSurface(bar, NULL, screenGeneral, &position_barra);
+		SDL_BlitSurface(score, NULL, screenGeneral, &position_score);
 		SDL_Flip(screenGeneral);
 		SDL_Delay(delay);
 		/* Events */
@@ -170,14 +187,14 @@ int game() {
 			
 		}
 		/* Movement of the bar */
-		if (moveBarLeftTrue == 1 && posicion_barra.x > 0) {
-			posicion_barra.x = posicion_barra.x - moveBar;
+		if (moveBarLeftTrue == 1 && position_barra.x > 0) {
+			position_barra.x = position_barra.x - moveBar;
 		}
-		if (moveBarRightTrue == 1 && posicion_barra.x + bar->w < widthScreen) {
-			posicion_barra.x = posicion_barra.x + moveBar;
+		if (moveBarRightTrue == 1 && position_barra.x + bar->w < widthScreen) {
+			position_barra.x = position_barra.x + moveBar;
 		}
 		/* Game over */
-		if (posicion_ball.y + ball->h > heightScreen) {
+		if (position_ball.y + ball->h > heightScreen) {
 			printf("Game Over\n");
 			return 0;
 		}
