@@ -13,8 +13,6 @@ SDL_Event event;
 int widthScreen;
 int heightScreen;
 
-int game();
-
 int main() {
 	
 	// Execute
@@ -98,12 +96,11 @@ int main() {
 			}
 		}
 	}
-
 	return 0;
-
 }
 
 int game() {
+	
 	SDL_Rect position_ball, position_barra, position_score;
 	position_ball.x = 150;
 	position_ball.y = 100;
@@ -186,7 +183,7 @@ int game() {
 			if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)) {
 				SDL_FreeSurface(ball);
 				SDL_FreeSurface(bar);
-				return 0;
+				return countScore;
 			}
 			/* Event of the keys */
 			if (event.type == SDL_KEYDOWN) {
@@ -217,7 +214,7 @@ int game() {
 		/* Game over */
 		if (position_ball.y + ball->h > heightScreen) {
 			printf("Game Over\n");
-			return 0;
+			return countScore;
 		}
 	}
 }
