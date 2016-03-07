@@ -26,6 +26,12 @@ int main() {
 	widthScreen = infoScreen->current_w * 0.3;
 	heightScreen = infoScreen->current_h * 0.8;
 	
+	// Score
+	int score, i, a, e, intBestScore;
+	char charFileScore[20], charBestScore[20];
+	FILE  *f;
+	f = fopen("score.txt", "a+");
+
 	// Variables
 	int buttonPositionX, buttonPositionY;
 	SDL_Rect startButtonPosition, textStartPosition;
@@ -73,7 +79,22 @@ int main() {
 			if((buttonPositionX > startButtonPosition.x && buttonPositionX < startButtonPosition.x + startButton->w &&
 			   buttonPositionY > startButtonPosition.y && buttonPositionY < startButtonPosition.y + startButton->h &&
 			   event.button.button == SDL_BUTTON_LEFT) || event.key.keysym.sym == SDLK_RETURN) {
-				game();
+				f = fopen("score.txt", "a+");
+				while (fgets(charFileScore, 20, f)!=NULL) {
+					a = strlen(charFileScore);
+					e = 0;
+					while (charFileScore[a] != ' ') {
+						a--;
+						e++;
+					}
+					for (i = 0; i < e-1; i++) {
+						charBestScore[i] = charFileScore[e + i];
+					}
+					//printf("%s\n", charBestScore);
+				}
+				score = game();
+				fprintf(f, "Dani %i\n", score);
+				fclose(f);
 			}
 		}
 	}
@@ -199,5 +220,4 @@ int game() {
 			return 0;
 		}
 	}
-	return 1;
 }
