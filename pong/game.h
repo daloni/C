@@ -4,5 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct Screen {
+	SDL_Surface* screenGeneral;
+	int widthScreen;
+	int heightScreen;
+} Screen;
 
-int game(SDL_Surface* screenGeneral, int widthScreen, int heightScreen);
+
+int game(Screen sc);

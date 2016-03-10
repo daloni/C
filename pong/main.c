@@ -1,21 +1,20 @@
 #include "game.h"
 
-SDL_Surface* screenGeneral = NULL;
 SDL_Surface* startButton = NULL;
 SDL_Event event;
-int widthScreen;
-int heightScreen;
 
 int main() {
 	
+	Screen sc;
+
 	// Execute
 	SDL_Init (SDL_INIT_EVERYTHING);
 	TTF_Init();
 
 	const SDL_VideoInfo* infoScreen = SDL_GetVideoInfo();
 
-	widthScreen = infoScreen->current_w * 0.3;
-	heightScreen = infoScreen->current_h * 0.8;
+	sc.widthScreen = infoScreen->current_w * 0.3;
+	sc.heightScreen = infoScreen->current_h * 0.8;
 	
 	// Score
 	int score, i, a, e, intBestScore;
@@ -26,8 +25,8 @@ int main() {
 	// Variables
 	int buttonPositionX, buttonPositionY;
 	SDL_Rect startButtonPosition, textStartPosition;
-	startButtonPosition.x = widthScreen * 0.35;
-	startButtonPosition.y = heightScreen * 0.4;
+	startButtonPosition.x = sc.widthScreen * 0.35;
+	startButtonPosition.y = sc.heightScreen * 0.4;
 	startButton = SDL_LoadBMP("./img/start_button.bmp");
 	SDL_SetColorKey (startButton, SDL_SRCCOLORKEY, SDL_MapRGB (startButton->format, 0, 0, 0));
 
@@ -37,9 +36,9 @@ int main() {
 	
 	// Config	
 	SDL_WM_SetIcon(SDL_LoadBMP("./img/icon.bmp"), NULL);
-	screenGeneral = SDL_SetVideoMode(widthScreen, heightScreen, 32, /*SDL_SWSURFACE*/ SDL_RESIZABLE);
+	sc.screenGeneral = SDL_SetVideoMode(sc.widthScreen, sc.heightScreen, 32, /*SDL_SWSURFACE*/ SDL_RESIZABLE);
 
-	SDL_FillRect(screenGeneral, 0, SDL_MapRGB (screenGeneral->format, 42, 85, 224));
+	SDL_FillRect(sc.screenGeneral, 0, SDL_MapRGB (sc.screenGeneral->format, 42, 85, 224));
 
 	TTF_Font* font = TTF_OpenFont("./fonts/arial.ttf", 12);
 	SDL_Surface *text;
@@ -48,15 +47,15 @@ int main() {
 	// Write text to surface
 	text = TTF_RenderText_Solid(font, "Presiona enter", text_color);
 
-	SDL_BlitSurface(startButton, NULL, screenGeneral, &startButtonPosition);
-	SDL_BlitSurface(text, NULL, screenGeneral, &textStartPosition);
+	SDL_BlitSurface(startButton, NULL, sc.screenGeneral, &startButtonPosition);
+	SDL_BlitSurface(text, NULL, sc.screenGeneral, &textStartPosition);
 	
 	while (1) {
 		/* On click Quit */
-		SDL_FillRect(screenGeneral, 0, SDL_MapRGB (screenGeneral->format, 42, 85, 224));
-		SDL_BlitSurface(startButton, NULL, screenGeneral, &startButtonPosition);
-		SDL_BlitSurface(text, NULL, screenGeneral, &textStartPosition);
-		SDL_Flip(screenGeneral);
+		SDL_FillRect(sc.screenGeneral, 0, SDL_MapRGB (sc.screenGeneral->format, 42, 85, 224));
+		SDL_BlitSurface(startButton, NULL, sc.screenGeneral, &startButtonPosition);
+		SDL_BlitSurface(text, NULL, sc.screenGeneral, &textStartPosition);
+		SDL_Flip(sc.screenGeneral);
 		while(SDL_PollEvent(&event)) {
 			buttonPositionX = event.motion.x;
 			buttonPositionY = event.motion.y;
@@ -83,7 +82,7 @@ int main() {
 					}
 					//printf("%s\n", charBestScore);
 				}
-				score = game(screenGeneral, widthScreen, heightScreen);
+				score = game(sc);
 				fprintf(f, "Dani %i\n", score);
 				fclose(f);
 			}

@@ -4,15 +4,15 @@ SDL_Surface* ball = NULL;
 SDL_Surface* bar = NULL;
 SDL_Event event;
 
-int game(SDL_Surface* screenGeneral, int widthScreen, int heightScreen) {
+int game(Screen sc) {
 	
 	SDL_Rect position_ball, position_barra, position_score;
 	position_ball.x = 150;
 	position_ball.y = 100;
-	position_barra.x = widthScreen * 0.2;
-	position_barra.y = heightScreen * 0.9;
-	position_score.x = widthScreen * 0.8;
-	position_score.y = heightScreen * 0.1;
+	position_barra.x = sc.widthScreen * 0.2;
+	position_barra.y = sc.heightScreen * 0.9;
+	position_score.x = sc.widthScreen * 0.8;
+	position_score.y = sc.heightScreen * 0.1;
 
 	int x = 1, y = 1;
 	int movImage = 5, moveBar = 5, moveBarLeftTrue = 0, moveBarRightTrue = 0;
@@ -51,7 +51,7 @@ int game(SDL_Surface* screenGeneral, int widthScreen, int heightScreen) {
 		     position_ball.y < position_barra.y + bar->h &&
 		     position_ball.x + ball->w > position_barra.x &&
 		     position_ball.x < position_barra.x + bar->w/2 && x == 1) ||
-		    position_ball.x + ball->w > widthScreen) {
+		    position_ball.x + ball->w > sc.widthScreen) {
 			x = 0;
 		}
 		if (position_ball.y + ball->h > position_barra.y &&
@@ -77,11 +77,11 @@ int game(SDL_Surface* screenGeneral, int widthScreen, int heightScreen) {
 		sprintf(scoreChar, "Puntuacion: %i", countScore);
 		score = TTF_RenderText_Solid(font, scoreChar, text_color);
 		/* Screen config */
-		SDL_FillRect (screenGeneral, 0, SDL_MapRGB (screenGeneral->format, 42, 85, 224));
-		SDL_BlitSurface(ball, NULL, screenGeneral, &position_ball);
-		SDL_BlitSurface(bar, NULL, screenGeneral, &position_barra);
-		SDL_BlitSurface(score, NULL, screenGeneral, &position_score);
-		SDL_Flip(screenGeneral);
+		SDL_FillRect (sc.screenGeneral, 0, SDL_MapRGB (sc.screenGeneral->format, 42, 85, 224));
+		SDL_BlitSurface(ball, NULL, sc.screenGeneral, &position_ball);
+		SDL_BlitSurface(bar, NULL, sc.screenGeneral, &position_barra);
+		SDL_BlitSurface(score, NULL, sc.screenGeneral, &position_score);
+		SDL_Flip(sc.screenGeneral);
 		SDL_Delay(delay);
 		/* Events */
 		if(SDL_PollEvent(&event)) {
@@ -113,11 +113,11 @@ int game(SDL_Surface* screenGeneral, int widthScreen, int heightScreen) {
 		if (moveBarLeftTrue == 1 && position_barra.x > 0) {
 			position_barra.x = position_barra.x - moveBar;
 		}
-		if (moveBarRightTrue == 1 && position_barra.x + bar->w < widthScreen) {
+		if (moveBarRightTrue == 1 && position_barra.x + bar->w < sc.widthScreen) {
 			position_barra.x = position_barra.x + moveBar;
 		}
 		/* Game over */
-		if (position_ball.y + ball->h > heightScreen) {
+		if (position_ball.y + ball->h > sc.heightScreen) {
 			printf("Game Over\n");
 			return countScore;
 		}
