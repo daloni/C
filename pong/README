@@ -1,3 +1,4 @@
 # PONG #
 # author: Daniel Lopez #
 Execute: ./make
+Game Pong in C with SDL

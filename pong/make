@@ -1,2 +1,2 @@
-gcc main.c -o main `sdl-config --cflags` -lSDL_ttf -lSDL
+gcc main.c game.c -o main `sdl-config --cflags` -lSDL_ttf -lSDL
 ./main
